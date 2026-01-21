@@ -42,6 +42,10 @@ function App() {
         <HeroDetailsModal 
           heroId={selectedHeroId} 
           onClose={() => setSelectedHeroId(null)} 
+          onEdit={(hero) => {
+            setSelectedHeroId(null);
+            handleOpenEdit(hero);
+          }}
         />
       )}
     </div>

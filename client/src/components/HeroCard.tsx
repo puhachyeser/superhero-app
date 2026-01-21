@@ -104,8 +104,9 @@ const editButtonStyle: React.CSSProperties = {
   padding: '6px 12px',
   cursor: 'pointer',
   borderRadius: '4px',
-  border: '1px solid #ccc',
-  backgroundColor: '#fff'
+  border: 'none',
+  backgroundColor: '#007bff',
+  color: 'white'
 };
 
 const deleteButtonStyle: React.CSSProperties = {
