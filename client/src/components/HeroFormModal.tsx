@@ -66,69 +66,89 @@ const HeroFormModal: React.FC<Props> = ({ onClose, heroToEdit }) => {
   return (
     <div className="modal-backdrop" style={modalBackdropStyle}>
       <form onSubmit={handleSubmit} className="modal-content" style={modalContentStyle}>
-        <h2>{heroToEdit ? 'Edit Hero' : 'Create New Hero'}</h2>
+        <h2 style={{ marginBottom: '20px' }}>{heroToEdit ? 'Edit Hero' : 'Create New Hero'}</h2>
         
         <div style={scrollContainerStyle}>
-          <label style={labelStyle}>General Information</label>
-          <input 
-            value={formData.nickname}
-            placeholder="Nickname" 
-            onChange={e => setFormData({...formData, nickname: e.target.value})} 
-            required 
-          />
-          <input 
-            value={formData.real_name}
-            placeholder="Real Name" 
-            onChange={e => setFormData({...formData, real_name: e.target.value})} 
-            required
-          />
-          <textarea 
-            value={formData.origin_description}
-            placeholder="Origin Description" 
-            onChange={e => setFormData({...formData, origin_description: e.target.value})} 
-            required
-            rows={3}
-          />
-          <input 
-            value={formData.superpowers}
-            placeholder="Superpowers" 
-            onChange={e => setFormData({...formData, superpowers: e.target.value})} 
-            required
-          />
-          <input 
-            value={formData.catch_phrase}
-            placeholder="Catch Phrase" 
-            onChange={e => setFormData({...formData, catch_phrase: e.target.value})} 
-            required
-          />
+          <div style={sectionStyle}>
+            <label style={labelStyle}>Hero Nickname</label>
+            <input 
+              value={formData.nickname}
+              placeholder="e.g. Superman" 
+              onChange={e => setFormData({...formData, nickname: e.target.value})} 
+              required 
+            />
+          </div>
 
-          <label style={{...labelStyle, marginTop: '15px'}}>Images URLs</label>
-          {images.map((url, index) => (
-            <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
-              <input 
-                value={url}
-                placeholder={`Image URL #${index + 1}`} 
-                onChange={e => handleImageChange(index, e.target.value)}
-                style={{ flex: 1 }}
-              />
-              <button 
-                type="button" 
-                onClick={() => removeImageField(index)}
-                style={removeBtnStyle}
-              >
-                ✕
-              </button>
-            </div>
-          ))}
-          <button type="button" onClick={addImageField} style={addBtnStyle}>
-            + Add Another Image
-          </button>
+          <div style={sectionStyle}>
+            <label style={labelStyle}>Real Full Name</label>
+            <input 
+              value={formData.real_name}
+              placeholder="e.g. Clark Kent" 
+              onChange={e => setFormData({...formData, real_name: e.target.value})} 
+              required
+            />
+          </div>
+
+          <div style={sectionStyle}>
+            <label style={labelStyle}>Origin Story</label>
+            <textarea 
+              value={formData.origin_description}
+              placeholder="How did this hero become who they are?" 
+              onChange={e => setFormData({...formData, origin_description: e.target.value})} 
+              required
+              rows={3}
+            />
+          </div>
+
+          <div style={sectionStyle}>
+            <label style={labelStyle}>Superpowers</label>
+            <input 
+              value={formData.superpowers}
+              placeholder="e.g. Flight, Super Strength" 
+              onChange={e => setFormData({...formData, superpowers: e.target.value})} 
+              required
+            />
+          </div>
+
+          <div style={sectionStyle}>
+            <label style={labelStyle}>Catch Phrase</label>
+            <input 
+              value={formData.catch_phrase}
+              placeholder="Their famous words..." 
+              onChange={e => setFormData({...formData, catch_phrase: e.target.value})} 
+              required
+            />
+          </div>
+
+          <div style={{ marginTop: '10px' }}>
+            <label style={labelStyle}>Image Gallery (URLs)</label>
+            {images.map((url, index) => (
+              <div key={index} style={{ display: 'flex', gap: '8px', marginBottom: '8px' }}>
+                <input 
+                  value={url}
+                  placeholder={`http://image-url.com/photo-${index + 1}.jpg`} 
+                  onChange={e => handleImageChange(index, e.target.value)}
+                  style={{ flex: 1 }}
+                />
+                <button 
+                  type="button" 
+                  onClick={() => removeImageField(index)}
+                  style={removeBtnStyle}
+                >
+                  ✕
+                </button>
+              </div>
+            ))}
+            <button type="button" onClick={addImageField} style={addBtnStyle}>
+              + Add Another Image URL
+            </button>
+          </div>
         </div>
         
         <div style={footerStyle}>
           <button type="button" onClick={onClose} style={cancelBtnStyle}>Cancel</button>
           <button type="submit" disabled={isLoading} style={submitBtnStyle}>
-            {isLoading ? 'Saving...' : heroToEdit ? 'Save Changes' : 'Create'}
+            {isLoading ? 'Saving...' : heroToEdit ? 'Save Changes' : 'Create Hero'}
           </button>
         </div>
       </form>
@@ -143,20 +163,33 @@ const modalBackdropStyle: React.CSSProperties = {
 
 const modalContentStyle: React.CSSProperties = {
   backgroundColor: 'white', padding: '30px', borderRadius: '16px', 
-  display: 'flex', flexDirection: 'column', width: '450px', maxHeight: '85vh'
+  display: 'flex', flexDirection: 'column', width: '450px', maxHeight: '85vh',
+  boxShadow: '0 10px 40px rgba(0,0,0,0.2)'
 };
 
 const scrollContainerStyle: React.CSSProperties = {
-  overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '10px', paddingRight: '5px'
+  overflowY: 'auto', display: 'flex', flexDirection: 'column', gap: '15px', paddingRight: '5px'
 };
 
-const labelStyle: React.CSSProperties = { fontSize: '0.8rem', fontWeight: 'bold', color: '#888', textTransform: 'uppercase' };
+const sectionStyle: React.CSSProperties = {
+  display: 'flex',
+  flexDirection: 'column',
+  gap: '5px'
+};
 
-const footerStyle: React.CSSProperties = { marginTop: '20px', display: 'flex', gap: '10px', justifyContent: 'flex-end' };
+const labelStyle: React.CSSProperties = { 
+  fontSize: '0.75rem', 
+  fontWeight: 'bold', 
+  color: '#888', 
+  textTransform: 'uppercase',
+  marginLeft: '2px'
+};
 
-const submitBtnStyle: React.CSSProperties = { padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer' };
+const footerStyle: React.CSSProperties = { marginTop: '25px', display: 'flex', gap: '10px', justifyContent: 'flex-end' };
+
+const submitBtnStyle: React.CSSProperties = { padding: '10px 20px', backgroundColor: '#007bff', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' };
 const cancelBtnStyle: React.CSSProperties = { padding: '10px 20px', background: '#eee', border: 'none', borderRadius: '8px', cursor: 'pointer' };
-const addBtnStyle: React.CSSProperties = { padding: '8px', background: '#f8f9fa', border: '1px dashed #ccc', borderRadius: '8px', cursor: 'pointer', fontSize: '0.9rem' };
-const removeBtnStyle: React.CSSProperties = { background: '#ff4d4f', color: 'white', border: 'none', borderRadius: '4px', width: '35px', cursor: 'pointer' };
+const addBtnStyle: React.CSSProperties = { padding: '8px', background: '#f8f9fa', border: '1px dashed #ccc', borderRadius: '8px', cursor: 'pointer', fontSize: '0.85rem', color: '#555' };
+const removeBtnStyle: React.CSSProperties = { background: '#ff4d4f', color: 'white', border: 'none', borderRadius: '4px', width: '35px', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center' };
 
 export default HeroFormModal;
