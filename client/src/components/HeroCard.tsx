@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { type Superhero, useDeleteSuperheroMutation } from '../features/superheroesApi';
 
 interface HeroCardProps {
@@ -9,14 +9,15 @@ interface HeroCardProps {
 
 const HeroCard: React.FC<HeroCardProps> = ({ hero, onEdit, onView }) => {
   const [deleteSuperhero, { isLoading: isDeleting }] = useDeleteSuperheroMutation();
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleDelete = async (e: React.MouseEvent) => {
     e.stopPropagation();
-    if (window.confirm(`Are you sure you want to delete ${hero.nickname}?`)) {
+    if (window.confirm(`Delete ${hero.nickname}?`)) {
       try {
         await deleteSuperhero(hero._id).unwrap();
       } catch (err) {
-        console.error('Failed to delete:', err);
+        console.error(err);
       }
     }
   };
@@ -29,93 +30,129 @@ const HeroCard: React.FC<HeroCardProps> = ({ hero, onEdit, onView }) => {
   return (
     <div 
       onClick={() => onView(hero._id)}
-      style={cardStyle}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
+      style={{
+        ...cardStyle,
+        transform: isHovered ? 'translateY(-5px)' : 'none',
+        boxShadow: isHovered ? '0 10px 20px rgba(0,0,0,0.15)' : '0 4px 6px rgba(0,0,0,0.05)'
+      }}
     >
-      <div style={{ display: 'flex', gap: '15px' }}>
+      <div style={imageContainerStyle}>
         {hero.images?.[0] ? (
-          <img 
-            src={hero.images[0]} 
-            alt={hero.nickname} 
-            style={imageStyle} 
-          />
+          <img src={hero.images[0]} alt={hero.nickname} style={imageStyle} />
         ) : (
           <div style={placeholderStyle}>No Image</div>
         )}
         
-        <div style={{ flex: 1 }}>
-          <h3 style={{ margin: '0 0 5px 0' }}>{hero.nickname}</h3>
-          <p style={{ margin: 0, color: '#666' }}>
-            <strong>Real name:</strong> {hero.real_name}
-          </p>
+        <div style={{
+          ...overlayStyle,
+          opacity: isHovered ? 1 : 0
+        }}>
+          <button onClick={handleEdit} style={editButtonStyle}>Edit</button>
+          <button 
+            onClick={handleDelete} 
+            disabled={isDeleting} 
+            style={deleteButtonStyle}
+          >
+            {isDeleting ? '...' : 'Delete'}
+          </button>
         </div>
       </div>
       
-      <div style={{ marginTop: '15px', display: 'flex', gap: '10px' }}>
-        <button 
-          onClick={handleEdit}
-          style={editButtonStyle}
-        >
-          Edit
-        </button>
-        <button 
-          onClick={handleDelete} 
-          disabled={isDeleting}
-          style={deleteButtonStyle}
-        >
-          {isDeleting ? 'Deleting...' : 'Delete'}
-        </button>
+      <div style={infoStyle}>
+        <h3 style={nicknameStyle}>{hero.nickname}</h3>
       </div>
     </div>
   );
 };
 
 const cardStyle: React.CSSProperties = {
-  border: '1px solid #ddd',
-  borderRadius: '12px',
-  padding: '15px',
-  marginBottom: '15px',
+  width: '200px',
+  borderRadius: '16px',
+  overflow: 'hidden',
   cursor: 'pointer',
-  transition: 'transform 0.2s, box-shadow 0.2s',
+  transition: 'all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1)',
   backgroundColor: '#fff',
-  boxShadow: '0 2px 4px rgba(0,0,0,0.05)'
+  border: '1px solid #eee',
+  display: 'inline-block',
+  margin: '10px'
+};
+
+const imageContainerStyle: React.CSSProperties = {
+  position: 'relative',
+  width: '100%',
+  height: '260px',
+  backgroundColor: '#f8f9fa'
 };
 
 const imageStyle: React.CSSProperties = {
-  width: '100px',
-  height: '100px',
-  borderRadius: '8px',
-  objectFit: 'cover',
-  backgroundColor: '#f0f0f0'
+  width: '100%',
+  height: '100%',
+  objectFit: 'cover'
 };
 
 const placeholderStyle: React.CSSProperties = {
-  width: '100px',
-  height: '100px',
-  borderRadius: '8px',
-  backgroundColor: '#f5f5f5',
+  height: '100%',
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  fontSize: '12px',
-  color: '#999'
+  color: '#aaa',
+  fontSize: '14px'
+};
+
+const overlayStyle: React.CSSProperties = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: 'rgba(0,0,0,0.4)',
+  display: 'flex',
+  flexDirection: 'column',
+  justifyContent: 'center',
+  alignItems: 'center',
+  gap: '10px',
+  transition: 'opacity 0.3s ease',
+  padding: '0 20px'
+};
+
+const infoStyle: React.CSSProperties = {
+  padding: '12px',
+  textAlign: 'center',
+  backgroundColor: '#fff'
+};
+
+const nicknameStyle: React.CSSProperties = {
+  margin: 0,
+  fontSize: '18px',
+  fontWeight: 'bold',
+  color: '#333',
+  whiteSpace: 'nowrap',
+  overflow: 'hidden',
+  textOverflow: 'ellipsis'
 };
 
 const editButtonStyle: React.CSSProperties = {
-  padding: '6px 12px',
-  cursor: 'pointer',
-  borderRadius: '4px',
+  width: '100%',
+  padding: '8px',
+  borderRadius: '8px',
   border: 'none',
   backgroundColor: '#007bff',
-  color: 'white'
+  color: '#fff',
+  fontWeight: '600',
+  cursor: 'pointer'
 };
 
 const deleteButtonStyle: React.CSSProperties = {
-  padding: '6px 12px',
-  cursor: 'pointer',
-  borderRadius: '4px',
+  width: '100%',
+  padding: '8px',
+  borderRadius: '8px',
   border: 'none',
   backgroundColor: '#ff4d4f',
-  color: 'white'
+  color: '#fff',
+  fontWeight: '600',
+  cursor: 'pointer'
 };
 
 export default HeroCard;
