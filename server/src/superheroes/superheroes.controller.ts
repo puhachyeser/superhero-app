@@ -6,6 +6,7 @@ import {
   Patch,
   Param,
   Delete,
+  Query,
 } from '@nestjs/common';
 import { SuperheroesService } from './superheroes.service';
 import { CreateSuperheroDto } from './dto/create-superhero.dto';
@@ -21,8 +22,10 @@ export class SuperheroesController {
   }
 
   @Get()
-  findAll() {
-    return this.superheroesService.findAll();
+  findAll(@Query('page') page: string, @Query('limit') limit: string) {
+    const pageNumber = +page || 1;
+    const limitNumber = +limit || 5;
+    return this.superheroesService.findAll(pageNumber, limitNumber);
   }
 
   @Get(':id')
