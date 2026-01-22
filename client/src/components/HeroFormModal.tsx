@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { 
   type Superhero, 
   useCreateSuperheroMutation, 
@@ -25,6 +25,13 @@ const HeroFormModal: React.FC<Props> = ({ onClose, heroToEdit }) => {
 
   const [createSuperhero, { isLoading: isCreating }] = useCreateSuperheroMutation();
   const [updateSuperhero, { isLoading: isUpdating }] = useUpdateSuperheroMutation();
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   const handleImageChange = (index: number, value: string) => {
     const newImages = [...images];

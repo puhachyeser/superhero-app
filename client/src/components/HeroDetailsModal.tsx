@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useGetSuperheroByIdQuery, useDeleteSuperheroMutation } from '../features/superheroesApi';
 import { type Superhero } from '../features/superheroesApi';
 
@@ -15,6 +15,13 @@ const HeroDetailsModal: React.FC<Props> = ({ heroId, onClose, onEdit }) => {
   const [hoverBtn, setHoverBtn] = useState<'edit' | 'delete' | null>(null);
   const [activeImgIndex, setActiveImgIndex] = useState(0);
   const [isGalleryHovered, setIsGalleryHovered] = useState(false);
+
+  useEffect(() => {
+    document.body.style.overflow = 'hidden';
+    return () => {
+      document.body.style.overflow = 'auto';
+    };
+  }, []);
 
   const handleDelete = async () => {
     if (hero && window.confirm(`Are you sure you want to delete ${hero.nickname}?`)) {
