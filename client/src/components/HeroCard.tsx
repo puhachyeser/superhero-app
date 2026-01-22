@@ -69,7 +69,7 @@ const HeroCard: React.FC<HeroCardProps> = ({ hero, onEdit, onView }) => {
 
 const styles: Record<string, React.CSSProperties> = {
   card: {
-    width: '200px',
+    width: '210px',
     borderRadius: '16px',
     overflow: 'hidden',
     cursor: 'pointer',

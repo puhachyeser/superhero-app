@@ -20,15 +20,15 @@ function App() {
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto', padding: '20px' }}>
-      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-        <h1>Superhero Database</h1>
-        <button onClick={handleOpenCreate} style={{ padding: '10px 20px', backgroundColor: '#28a745', color: 'white' }}>
+    <div style={styles.appContainer}>
+      <header style={styles.header}>
+        <h1 style={styles.title}>Superhero Database</h1>
+        <button onClick={handleOpenCreate} style={styles.addButton}>
           + Add New Hero
         </button>
       </header>
 
-      <hr />
+      <div style={styles.divider} />
 
       <HeroList onEditHero={handleOpenEdit} onViewHero={(id) => setSelectedHeroId(id)} />
 
@@ -38,6 +38,7 @@ function App() {
           onClose={() => setIsModalOpen(false)} 
         />
       )}
+
       {selectedHeroId && (
         <HeroDetailsModal 
           heroId={selectedHeroId} 
@@ -51,5 +52,41 @@ function App() {
     </div>
   );
 }
+
+const styles: Record<string, React.CSSProperties> = {
+  appContainer: {
+    maxWidth: '1200px',
+    margin: '0 auto',
+    padding: '40px 20px',
+  },
+  header: {
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: '10px'
+  },
+  title: {
+    fontSize: '2rem',
+    color: '#1a1a1a',
+    margin: 0
+  },
+  addButton: {
+    padding: '12px 24px',
+    backgroundColor: '#28a745',
+    color: 'white',
+    border: 'none',
+    borderRadius: '10px',
+    fontSize: '1rem',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    transition: 'background-color 0.2s',
+    boxShadow: '0 4px 12px rgba(40, 167, 69, 0.2)'
+  },
+  divider: {
+    height: '1px',
+    backgroundColor: '#eee',
+    margin: '20px 0 30px 0'
+  }
+};
 
 export default App;

@@ -66,7 +66,6 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: 'column',
     alignItems: 'center',
     width: '100%',
-    padding: '20px 0'
   },
   listContainer: {
     display: 'flex',
@@ -74,7 +73,8 @@ const styles: Record<string, React.CSSProperties> = {
     justifyContent: 'center',
     gap: '20px',
     width: '100%',
-    maxWidth: '1200px'
+    maxWidth: '800px',
+    margin: '0 auto',
   },
   paginationContainer: {
     marginTop: '40px',
