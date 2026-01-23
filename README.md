@@ -20,6 +20,8 @@ MONGODB_URI=mongodb://localhost:27017/superhero-db
 
 Start the application with the `npm start` command.
 
+**Note:** Ensure that Docker Desktop is installed and running on your system.
+
 ## For testing
 
-Run tests using the `test-all` command in the root directory or `npm test` within the individual project folders.
+Run tests using the `npm run test-all` command in the root directory or `npm test` within the individual project folders.

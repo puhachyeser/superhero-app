@@ -5,9 +5,9 @@
   "main": "index.js",
   "scripts": {
     "install-all": "concurrently \"npm install --prefix client\" \"npm install --prefix server\"",
-    "db:up": "docker-compose -f docker-compose.db.yml up -d",
-    "db:down": "docker-compose -f docker-compose.db.yml down",
-    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "db:up": "docker-compose -f docker-compose.yml up -d",
+    "db:down": "docker-compose -f docker-compose.yml down",
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run start:dev --prefix server\"",
     "start": "npm run db:up && npm run dev",
     "test-all": "concurrently \"npm test --prefix client\" \"npm test --prefix server\""
   },
