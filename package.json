@@ -1,0 +1,29 @@
+{
+  "name": "superhero-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "install-all": "concurrently \"npm install --prefix client\" \"npm install --prefix server\"",
+    "db:up": "docker-compose -f docker-compose.db.yml up -d",
+    "db:down": "docker-compose -f docker-compose.db.yml down",
+    "dev": "concurrently \"npm run dev --prefix client\" \"npm run dev --prefix server\"",
+    "start": "npm run db:up && npm run dev",
+    "test-all": "concurrently \"npm test --prefix client\" \"npm test --prefix server\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/puhachyeser/superhero-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/puhachyeser/superhero-app/issues"
+  },
+  "homepage": "https://github.com/puhachyeser/superhero-app#readme",
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}
