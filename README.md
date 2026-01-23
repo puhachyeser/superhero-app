@@ -2,7 +2,13 @@
 
 ### 1. Install dependencies
 
-Install dependencies for the entire project:
+Install root dependencies:
+
+```bash
+npm install
+```
+
+Install dependencies for both client and server:
 
 ```bash
 npm run install-all

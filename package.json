@@ -8,7 +8,7 @@
     "db:up": "docker-compose -f docker-compose.yml up -d",
     "db:down": "docker-compose -f docker-compose.yml down",
     "dev": "concurrently \"npm run dev --prefix client\" \"npm run start:dev --prefix server\"",
-    "start": "npm run db:up && npm run dev",
+    "start": "concurrently \"npm run db:up\" \"npm run dev\"",
     "test-all": "concurrently \"npm test --prefix client\" \"npm test --prefix server\""
   },
   "repository": {
